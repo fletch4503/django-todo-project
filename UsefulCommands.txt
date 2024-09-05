@@ -1,6 +1,11 @@
 django-admin startproject todo_manager
 python manage.py runserver
+python manage.py createsuperuser    # fletch4503@mail.ru
 
+python manage.py startapp todo_list
+python manage.py showmigrations
+python manage.py makemigrations
+python manage.py migrate            - Применить миграцию
 
 git remote
 git remote remove origin
