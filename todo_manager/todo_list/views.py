@@ -3,14 +3,20 @@ from django.http import (
     HttpResponse,
 )
 from django.shortcuts import render
-from django.views.generic import TemplateView, ListView
+from django.views.generic import (
+    TemplateView,
+    ListView,
+    DetailView,
+)
 
 from .models import ToDoItem
 
 
 # Здесь определяем Functional Based View
 def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия
+    # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
     todo_items = ToDoItem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим все элементы
+    # todo_items = ToDoItem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
     # todo_items = ToDoItem.objects.order_by("id").all()  # свойство objects есть в БД сортировкой по id
     return render(
         request,
@@ -46,3 +52,8 @@ class ToDoListView(ListView):  # Декларируем свойства
 
 class ToDoListDoneView(ListView):  # делаем свой класс на основе TemplateView. Описываем действия
     queryset = ToDoItem.objects.filter(done=True).all()
+
+
+class ToDoDetailView(DetailView):  # делаем свой класс на основе TemplateView. Описываем действия
+    model = ToDoItem
+    # context_object_name =
