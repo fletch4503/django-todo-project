@@ -1,10 +1,13 @@
+check venv!
+cd todo_manager
+
 django-admin startproject todo_manager
 python manage.py runserver
 python manage.py createsuperuser    # fletch4503@mail.ru
 
-python manage.py startapp todo_list
-python manage.py showmigrations
-python manage.py makemigrations
+python manage.py startapp todo_list - создать приложение
+python manage.py showmigrations     - Показать все миграции
+python manage.py makemigrations     - миграцию
 python manage.py migrate            - Применить миграцию
 
 git remote
