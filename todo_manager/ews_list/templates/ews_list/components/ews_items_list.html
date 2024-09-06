@@ -1,0 +1,14 @@
+  <ul>
+    {% for ews_item in object_list %}
+      <li>
+        <a href="{% url 'ews_list:detail' pk=ews_item.pk %}">
+          {{ ews_item.title }}
+          {% if ews_item.done %}
+            ✅
+          {% else %}
+            ❌
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>

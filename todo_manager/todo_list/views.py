@@ -8,13 +8,17 @@ from django.views.generic import (
     DetailView,
 )
 
-from .models import ToDoItem
+from .models import (
+    ToDoItem,
+    pwpitem,
+    ewsitem,
+)
 
 
 # Здесь определяем Functional Based View
 def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия
     # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
-    todo_items = ToDoItem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим все элементы
+    todo_items = ToDoItem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
     # todo_items = ToDoItem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
     # todo_items = ToDoItem.objects.order_by("id").all()  # свойство objects есть в БД сортировкой по id
     return render(

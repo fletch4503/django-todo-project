@@ -85,8 +85,13 @@ DATABASES = {
 # DATABASES = {
 #     "default": {
 #         "ENGINE": "django.db.backends.mysql",
-#         "OPTIONS": {
-#             "read_default_file": "/path/to/my.cnf",
+#           "HOST": "flet4er.2bp.ru",
+#           "NAME": "имя базы данных",
+#       "PASSWORD": "пароль",
+#           "PORT": "порт бд",
+#           "USER": "имя пользователя",
+#        "OPTIONS": {
+#             "read_default_file": "./my.cnf",
 #         },
 #     }
 # }

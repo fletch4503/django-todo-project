@@ -5,7 +5,7 @@ django-admin startproject todo_manager
 python manage.py runserver
 python manage.py createsuperuser    # fletch4503@mail.ru
 
-python manage.py startapp todo_list - создать приложение
+python manage.py startapp todo_list - создать приложение, ews_list - для работы с почтой, pwp_list - с проектами
 python manage.py showmigrations     - Показать все миграции
 python manage.py makemigrations     - миграцию
 python manage.py migrate            - Применить миграцию

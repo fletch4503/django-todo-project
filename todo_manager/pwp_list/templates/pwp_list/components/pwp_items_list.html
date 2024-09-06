@@ -1,0 +1,14 @@
+  <ul>
+    {% for pwp_item in object_list %}
+      <li>
+        <a href="{% url 'pwp_list:detail' pk=pwp_item.pk %}">
+          {{ pwp_item.title }}
+          {% if pwp_item.done %}
+            ✅
+          {% else %}
+            ❌
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
