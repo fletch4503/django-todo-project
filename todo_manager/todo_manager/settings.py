@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "todo_list.apps.TodoListConfig",
-    "ews_list.apps.EWSListConfig",
-    "pwp_list.apps.PWPListConfig",
+    "ews_list.apps.EWSListConfig",   # приложение для работы с почтой
+    "pwp_list.apps.PWPListConfig",  # приложение для работы с БД
 ]
 
 MIDDLEWARE = [
