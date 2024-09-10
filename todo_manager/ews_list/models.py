@@ -20,6 +20,9 @@ from exchangelib import (
 
 # Сюда будем добавлять класс для работы с почтой - class pwp_exch_model: из основного кода
 class ewsitem(models.Model):
+    class Meta:
+        ordering = ("id", )  # со знаком '-' - обратная сортировка
+        verbose_name = "EWS Item"
     # class Meta:
     #     project_id = ("id", )  # со знаком '-' - обратная сортировка
     #     project_req_date = "Project Date"

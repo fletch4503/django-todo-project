@@ -5,6 +5,9 @@ from mysql.connector import Error
 
 # Сюда будем добавлять класс для работы с основной базой данных - class pwp_db_model(db_const): из основного кода
 class pwpitem(models.Model):
+    class Meta:
+        ordering = ("id", )  # со знаком '-' - обратная сортировка
+        verbose_name = "PWP Item"
     # class Meta:
     #     project_id = ("id", )  # со знаком '-' - обратная сортировка
     #     project_req_date = "Project Date"
