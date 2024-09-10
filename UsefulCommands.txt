@@ -7,8 +7,15 @@ python manage.py createsuperuser    # fletch4503@mail.ru
 
 python manage.py startapp todo_list - создать приложение, ews_list - для работы с почтой, pwp_list - с проектами
 python manage.py showmigrations     - Показать все миграции
-python manage.py makemigrations     - миграцию
+python manage.py makemigrations     - внести изменения/создать миграцию
 python manage.py migrate            - Применить миграцию
+
+Порядок команд после внесения изменений в модель:
+Step 1: Delete the db.sqlite3 file.
+Step 2 : $ python manage.py migrate
+Step 3 : $ python manage.py makemigrations
+Step 4: Create the super user using $ python manage.py createsuperuser
+new db.sqlite3 will generates automatically
 
 git remote
 git remote remove origin
