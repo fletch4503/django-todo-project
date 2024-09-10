@@ -8,11 +8,7 @@ from django.views.generic import (
     DetailView,
 )
 
-from .models import (
-    ToDoItem,
-    pwpitem,
-    ewsitem,
-)
+from .models import ToDoItem
 
 
 # Здесь определяем Functional Based View
