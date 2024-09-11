@@ -10,7 +10,6 @@
       text-align: left;
       padding: 3px;
     }
-
     tr:nth-child(even) {
       background-color: #dddddd;
     }
@@ -23,19 +22,21 @@
   </tr>
   <ul>
     {% for todo_item in object_list %}
-      <a href="{% url 'todo_list:detail' pk=todo_item.pk %}">
-        <tr>
-          <th> {{todo_item.pk}} </th>
-          <th> {{ todo_item.title }} </th>
-          <th>
-            {% if todo_item.done %}
-              ✅
-            {% else %}
-              ❌
-            {% endif %}
-          </th>
-        </tr>
-      </a>
+      <tr>
+        <td>
+          <a href="{% url 'todo_list:detail' pk=todo_item.pk %}"> {{todo_item.pk}} </a>
+        </td>
+        <td>
+          <a href="{% url 'todo_list:detail' pk=todo_item.pk %}"> {{ todo_item.title }} </a>
+        </td>
+        <td>
+          {% if todo_item.done %}
+            ✅
+          {% else %}
+            ❌
+          {% endif %} <br>
+        </td>
+      </tr>
     {% endfor %}
   </ul>
  </table>
