@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "todo_list.apps.TodoListConfig",
+    "todo_list.apps.TodoListConfig",  # приложение со списком дел
     "ews_list.apps.EWSListConfig",   # приложение для работы с почтой
     "pwp_list.apps.PWPListConfig",  # приложение для работы с БД
 ]

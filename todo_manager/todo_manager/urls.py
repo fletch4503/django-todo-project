@@ -21,8 +21,9 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html"), name="index"),  # Class-based views
-    path("todos/", include("todo_list.urls")),  # Including another URLconf
-    # path("todos/", include("ews_list.urls")),  # Including another URLconf
+    path("about/", TemplateView.as_view(template_name="about.html"), name="About"),
+    path("todos/", include("todo_list.urls")),  # Including first URLconf
+    path("ews/", include("ews_list.urls")),  # Including EWS URLconf
     # path("todos/", include("pwp_list.urls")),  # Including another URLconf
     path("admin/", admin.site.urls),
 ]

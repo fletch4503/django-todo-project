@@ -11,8 +11,15 @@ from django.views.generic import (
 from .models import ToDoItem
 
 
+def about(request):
+    return render(
+        request,
+        template_name="about.html",
+    )
+
+
 # Здесь определяем Functional Based View
-def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия
+def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия с пользователем
     # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
     todo_items = ToDoItem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
     # todo_items = ToDoItem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
@@ -20,14 +27,15 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
     return render(
         request,
         template_name="todo_list/index.html",
-        context={"todo_items": todo_items}  # Обращение в БД за всеми элементами
+        context={"todo_items": todo_items},  # Обращение в БД за всеми элементами
         # context={"todo_items": todo_items[:3]}  # Обращение в БД за всеми элементами
     )
 
 
 class ToDoListIndexView(ListView):  # делаем свой класс на основе TemplateView. Описываем действия
     template_name = "todo_list/index.html"
-    queryset = ToDoItem.objects.all()[:3]
+    queryset = ToDoItem.objects.all()
+    # queryset = ToDoItem.objects.all()[:3]
     # queryset = ToDoItem.objects.order_by("-id").all()[:2]  # с сортировкой элементов
     # model = ToDoItem
 
