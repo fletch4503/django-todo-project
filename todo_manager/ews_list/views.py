@@ -32,6 +32,7 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
     # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
     conf_logging(level=logging.DEBUG)
     ews_items = ewsitem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
+    log.warning("Объекты ews_items: %s", str(ews_items))
     # ews_exch_items = pwp_exch_model.msg_cnt_list
     # total_count = 0
     # for i in range(0, len(ews_exch_items.msg_cnt_list)):

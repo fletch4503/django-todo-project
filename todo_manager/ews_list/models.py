@@ -5,8 +5,17 @@ from todo_manager.common import conf_logging
 
 log = logging.getLogger(__name__)
 
-from todo_manager.settings import exch_username, exch_userkey, exch_usersmtpaddr, exch_authtype, exch_serverurl, \
-    inb_fold, inb_fold_sales, inb_fold_supp, inb_fold_other
+from todo_manager.common import (
+    exch_username,
+    exch_userkey,
+    exch_usersmtpaddr,
+    exch_authtype,
+    exch_serverurl,
+    inb_fold,
+    inb_fold_sales,
+    inb_fold_supp,
+    inb_fold_other,
+)
 
 """
 Из файла настроек для Exchange-сервера берем
@@ -51,21 +60,21 @@ class pwp_exch_model:
     current_message = None  # Текущее обрабатываемое сообщение
 
     def __init__(self):  # Подключаемся к Exchange-серверу и проверяем подключение
-        log.info("pwp_exch_model --> exch_username: %s",exch_username)
-        log.info("pwp_exch_model --> exch_userkey: %s",exch_userkey)
+        log.warning("pwp_exch_model --> exch_username: %s",exch_username)
+        log.warning("pwp_exch_model --> exch_userkey: %s",exch_userkey)
         try:
             self.credents_project = Credentials(username=exch_username, password=exch_userkey)
-            log.info("pwp_exch_model --> Запустили подключение Credentials")
+            log.warning("pwp_exch_model --> Запустили подключение Credentials")
         except AttributeError:
             log.warning("Потерялся файл с конфигурацией в директории проекта")
-        self.version = Version(build=Build(15, 0, 1497, 4012))
+        self.version = Version(build=Build(15, 2, 1258, 4012))
         # Обрабатываем ошибку в параметрах Exchange-сервера
         try:
             self.conf_exchange = Configuration(
                 server=exch_serverurl, retry_policy=FaultTolerance(max_wait=3600), credentials=self.credents_project,
                 version=self.version, auth_type=exch_authtype, max_connections=10)
         except NameError:
-            log.info("Не заданы параметры Exchange-сервера")
+            log.warning("Не заданы параметры Exchange-сервера")
             exit()
         # Подключаемся к Exchange-аккаунту на основе данных из конфигурационного файла
         self.my_acc_exch = Account(primary_smtp_address=exch_usersmtpaddr, config=self.conf_exchange,
@@ -117,9 +126,9 @@ class pwp_exch_model:
 
     def count_inbox_msg(self):
         # 0 - Total, 1 - Unread, 2 - Suppl, 3 - mtst, 4 - other, 5 - TCB
-        print("pwp_exch_model --> count_inbox_msg --> Обновляем папку Inbox")
+        log.warning("pwp_exch_model --> count_inbox_msg --> Обновляем папку Inbox")
         self.my_acc_exch.inbox.refresh()
-        print("pwp_exch_model --> count_inbox_msg --> Считаем сообщения")
+        log.warning("pwp_exch_model --> count_inbox_msg --> Считаем сообщения")
         self.msg_cnt_list[0] = self.my_acc_exch.inbox.total_count  # Всего сообщений в папке Входящие
         self.msg_cnt_list[1] = self.my_acc_exch.inbox.unread_count  # Непрочитанных сообщений в папке Входящие
         all_items = self.my_acc_exch.inbox // inb_fold_supp  # Всего сообщений в папке Поставщики
@@ -195,17 +204,18 @@ class ewsitem(models.Model):
     #     project_req_date = "Project Date"
     conf_logging(level=logging.DEBUG)
     ews_exch = pwp_exch_model()
-    log.info("Количество входящих сообщений %r", ews_exch.msg_cnt_list)
+    log.warning("Количество входящих сообщений %r", ews_exch.msg_cnt_list)
     total_count = 0
     for i in range(0, len(ews_exch.msg_cnt_list)):
         total_count = total_count + ews_exch.msg_cnt_list[i]
     if total_count == 0:
         log.warning("ews_list - У вас нет входящих сообщений!!")
+    log.warning("Количество входящих сообщений: %r", total_count)
     email_title = models.CharField(max_length=250)  # Сюда вставляем заголовки писем с типом из exchangelib
     sender = models.EmailField(max_length=254)  # адрес отправителя
     # sender = models.CharField(max_length=250)  # адрес отправителя
     done = models.BooleanField(default=False)
-    log.warning("Got some data. email_title: %s, sender: %s, done: %s", email_title, sender, done)
+    # log.warning("Got some data. email_title: %s, sender: %s, done: %s", email_title, sender, done)
 
     def __str__(self):
         return self.email_title
