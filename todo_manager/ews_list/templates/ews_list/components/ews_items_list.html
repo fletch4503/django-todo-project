@@ -1,17 +1,49 @@
+ <style>
+    table {
+<!--      font-family: arial, sans-serif;-->
+<!--      border-collapse: collapse;-->
+      width: 100%;
+    }
+
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 3px;
+    }
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+  <table>
+  <tr>
+    <th>id</th>
+    <th>Email Topic</th>
+    <th>Sender</th>
+    <th>Current Status</th>
+  </tr>
   <ul>
     {% for ews_item in object_list %}
-      <li>
-        <a href="{% url 'ews_list:detail' pk=ews_item.pk %}">
-          {{ ews_item.email_title }} 
+      <tr>
+        <td>
+          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> {{ ews_item.pk }} </a>
+        </td>
+        <td>
+          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> {{ ews_item.email_title }} </a>
+        </td>
+        <td>
+          <a href="{% url 'ews_list:detail' pk=ews_item.pk %}"> {{ ews_item.sender }} </a>
+        </td>
+        <td>
            {% if ews_item.done %}
             ✅
           {% else %}
             ❌
-          {% endif %} <br />
-          {{ ews_item.sender }}
-        </a>
-      </li>
-    {% endfor %} <br />
-    <label for="file">Загружаем почту:</label>
-    <progress id="file" value="32" max="100"> 32% </progress>
+          {% endif %} <br>
+        </td>
+      </tr>
+    {% endfor %} <br>
   </ul>
+ </table> <br>
+ <label for="file">Загружаем почту:</label>
+ <progress id="file" value="32" max="100"> 32% </progress>
+ <br> <br />
