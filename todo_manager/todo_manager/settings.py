@@ -24,6 +24,26 @@ SECRET_KEY = "django-insecure-$tr33n=7s+f#esfs41dazv0w5#z0ss1teh7rqom)2&p^(rga3l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# конфигурация, которая записывает все логи из django именованного логгера в локальный файл
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "handlers": {
+#         "file": {
+#             "level": "DEBUG",
+#             "class": "logging.FileHandler",
+#             "filename": "debug.log",
+#         },
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["file"],
+#             "level": "DEBUG",
+#             "propagate": True,
+#         },
+#     },
+# }
+
 ALLOWED_HOSTS = []
 
 # Application definition

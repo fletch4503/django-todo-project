@@ -1,9 +1,6 @@
 from django.db import models
 import logging
 
-from todo_manager.common import conf_logging
-
-log = logging.getLogger(__name__)
 
 from todo_manager.common import (
     exch_username,
@@ -29,6 +26,12 @@ inb_fold_sales - название папки, в которую будут ск�
 inb_fold_supp - название папки, в которую будут складываться входящие сообщения от поставщиков
 inb_fold_other - название папки, в которую будут складываться неидентифицированные входящие сообщения
 """
+from exchangelib.util import PrettyXmlHandler
+
+logging.basicConfig(level=logging.DEBUG, handlers=[PrettyXmlHandler()])
+from todo_manager.common import conf_logging
+
+log = logging.getLogger(__name__)
 
 from exchangelib import (
     Account,
@@ -51,8 +54,8 @@ from exchangelib import (
 
 # Класс для работы с Exchange-сервером
 class pwp_exch_model:
-    # def __str__(self):  # Информируем о параметрах
-    # return f"{self.__class__.__name__}"
+    def __str__(self):  # Информируем о параметрах
+        return f"{self.__class__.__name__}"
     # # return f"{self.__class__.__name__}(id={id(self)})"
 
     # 0 - Total, 1 - Unread, 2 - Suppl, 3 - mtst, 4 - other, 5 - TCB
@@ -64,10 +67,10 @@ class pwp_exch_model:
         log.warning("pwp_exch_model --> exch_userkey: %s",exch_userkey)
         try:
             self.credents_project = Credentials(username=exch_username, password=exch_userkey)
-            log.warning("pwp_exch_model --> Запустили подключение Credentials")
+            # log.warning("pwp_exch_model --> Запустили подключение Credentials")
         except AttributeError:
             log.warning("Потерялся файл с конфигурацией в директории проекта")
-        self.version = Version(build=Build(15, 2, 1258, 4012))
+        self.version = Version(build=Build(15, 0, 1497, 4048))
         # Обрабатываем ошибку в параметрах Exchange-сервера
         try:
             self.conf_exchange = Configuration(
@@ -97,12 +100,12 @@ class pwp_exch_model:
         # self.f_supp_folder = None  # Начальный шаблон для добавления
         # self.f_supp_folder = self.my_acc_exch.inbox / 'DISTI'  # Начальный шаблон для добавления
         # self.f_vendor_folder = self.my_acc_exch.inbox / 'Vendors'  # Начальный шаблон для добавления
-        log.warning("pwp_exch_model --> self.f_in: %s", inb_fold)
-        log.warning("pwp_exch_model --> self.f_in_sales: %s", inb_fold_sales)
-        log.warning("pwp_exch_model --> self.f_in_supp: %s", inb_fold_supp)
-        log.warning("pwp_exch_model --> self.f_in_other: %s", inb_fold_other)
-        log.warning("pwp_exch_model --> self.f_in_requests: %s", self.my_acc_exch.inbox / 'ЗАПРОСЫ')
-        log.warning("pwp_exch_model --> self.f_in_projects: %s", self.my_acc_exch.inbox / 'ПРОЕКТЫ')
+        # log.warning("pwp_exch_model --> self.f_in: %s", inb_fold)
+        # log.warning("pwp_exch_model --> self.f_in_sales: %s", inb_fold_sales)
+        # log.warning("pwp_exch_model --> self.f_in_supp: %s", inb_fold_supp)
+        # log.warning("pwp_exch_model --> self.f_in_other: %s", inb_fold_other)
+        # log.warning("pwp_exch_model --> self.f_in_requests: %s", self.my_acc_exch.inbox / 'ЗАПРОСЫ')
+        # log.warning("pwp_exch_model --> self.f_in_projects: %s", self.my_acc_exch.inbox / 'ПРОЕКТЫ')
 
         # Отображаем количество сообщений в папке Входящие
         self.count_inbox_msg()
@@ -126,9 +129,9 @@ class pwp_exch_model:
 
     def count_inbox_msg(self):
         # 0 - Total, 1 - Unread, 2 - Suppl, 3 - mtst, 4 - other, 5 - TCB
-        log.warning("pwp_exch_model --> count_inbox_msg --> Обновляем папку Inbox")
+        # log.warning("pwp_exch_model --> count_inbox_msg --> Обновляем папку Inbox")
         self.my_acc_exch.inbox.refresh()
-        log.warning("pwp_exch_model --> count_inbox_msg --> Считаем сообщения")
+        # log.warning("pwp_exch_model --> count_inbox_msg --> Считаем сообщения")
         self.msg_cnt_list[0] = self.my_acc_exch.inbox.total_count  # Всего сообщений в папке Входящие
         self.msg_cnt_list[1] = self.my_acc_exch.inbox.unread_count  # Непрочитанных сообщений в папке Входящие
         all_items = self.my_acc_exch.inbox // inb_fold_supp  # Всего сообщений в папке Поставщики
@@ -202,15 +205,15 @@ class ewsitem(models.Model):
     # class Meta:
     #     project_id = ("id", )  # со знаком '-' - обратная сортировка
     #     project_req_date = "Project Date"
-    conf_logging(level=logging.DEBUG)
+    # conf_logging(level=logging.DEBUG)
     ews_exch = pwp_exch_model()
-    log.warning("Количество входящих сообщений %r", ews_exch.msg_cnt_list)
+    # log.warning("Количество входящих сообщений %r", ews_exch.msg_cnt_list)
     total_count = 0
     for i in range(0, len(ews_exch.msg_cnt_list)):
         total_count = total_count + ews_exch.msg_cnt_list[i]
     if total_count == 0:
         log.warning("ews_list - У вас нет входящих сообщений!!")
-    log.warning("Количество входящих сообщений: %r", total_count)
+    # log.warning("Количество входящих сообщений: %r", total_count)
     email_title = models.CharField(max_length=250)  # Сюда вставляем заголовки писем с типом из exchangelib
     sender = models.EmailField(max_length=254)  # адрес отправителя
     # sender = models.CharField(max_length=250)  # адрес отправителя
