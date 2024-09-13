@@ -11,11 +11,13 @@ from django.views.generic import (
 
 from ews_list.models import (
     ewsitem,
+    # log,
     # pwp_exch_model,
 )
 
 import logging
-from todo_manager.common import conf_logging
+
+# from todo_manager.common import conf_logging
 
 log = logging.getLogger(__name__)
 
@@ -30,9 +32,10 @@ def about(request):
 # Здесь определяем Functional Based View
 def index_view(request: HttpRequest) -> HttpResponse:  # Описываем действия
     # def index_view(request: HttpRequest, pk) -> HttpResponse:  # Описываем действия для Functional view
-    conf_logging(level=logging.DEBUG)
+    # conf_logging(level=logging.DEBUG)
     ews_items = ewsitem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
-    log.warning("Объекты ews_items: %s", str(ews_items))
+    for ews in ews_items:
+        print("Объекты ews_items ews_exch: %s", str(ews))
     # ews_exch_items = pwp_exch_model.msg_cnt_list
     # total_count = 0
     # for i in range(0, len(ews_exch_items.msg_cnt_list)):

@@ -18,6 +18,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from app import views as app_views
+from django.conf import settings
+
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="index.html"), name="index"),  # Class-based views
@@ -26,4 +29,11 @@ urlpatterns = [
     path("ews/", include("ews_list.urls")),  # Including EWS URLconf
     # path("todos/", include("pwp_list.urls")),  # Including another URLconf
     path("admin/", admin.site.urls),
+    path('sample/', app_views.sample_view),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

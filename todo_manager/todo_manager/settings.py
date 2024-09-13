@@ -46,6 +46,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -58,6 +62,7 @@ INSTALLED_APPS = [
     "todo_list.apps.TodoListConfig",  # приложение со списком дел
     "ews_list.apps.EWSListConfig",  # приложение для работы с почтой
     "pwp_list.apps.PWPListConfig",  # приложение для работы с БД
+    "debug_toolbar",  # админ панель для декаплинга
 ]
 
 MIDDLEWARE = [
@@ -68,6 +73,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",  # Подключение DebugToolbar
 ]
 
 ROOT_URLCONF = "todo_manager.urls"
