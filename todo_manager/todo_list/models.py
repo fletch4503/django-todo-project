@@ -2,6 +2,8 @@ from django.db import models
 
 
 class ToDoItem(models.Model):
+    objects = None
+
     class Meta:
         ordering = ("id",)  # со знаком '-' - обратная сортировка
         verbose_name = "ToDo Item"

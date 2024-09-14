@@ -8,6 +8,11 @@ from django.views.generic import (
     ListView,
     DetailView,
 )
+from requests import Response
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+# from yaml import serialize
 
 from ews_list.models import (
     ewsitem,
@@ -17,9 +22,10 @@ from ews_list.models import (
 
 import logging
 
-# from todo_manager.common import conf_logging
+from ews_list.serializers import ewsitemSerializer
 
 log = logging.getLogger(__name__)
+# from todo_manager.common import conf_logging
 
 
 def about(request):
@@ -35,13 +41,7 @@ def index_view(request: HttpRequest) -> HttpResponse:  # Описываем де
     # conf_logging(level=logging.DEBUG)
     ews_items = ewsitem.objects.all()[:3]  # свойство objects есть в БД сортировкой по id. Выводим 3 элемента
     for ews in ews_items:
-        print("Объекты ews_items ews_exch: %s", str(ews))
-    # ews_exch_items = pwp_exch_model.msg_cnt_list
-    # total_count = 0
-    # for i in range(0, len(ews_exch_items.msg_cnt_list)):
-    #     total_count = total_count + ews_exch_items.msg_cnt_list[i]
-    # if total_count == 0:
-    #     log.warning("ews_list - У вас нет входящих сообщений!!")
+        log.warning("Объекты ews_items ews_exch: %s", str(ews))
     # ews_items = ewsitem.objects.get(pk=pk)  # действия для Functional view -> если не нашли - делаем, исключение
     # ews_items = ewsitem.objects.order_by("id").all()  # свойство objects есть в БД сортировкой по id
     # log.warning("View Module. email_title: %s, sender: %s, done: %s",
@@ -88,3 +88,14 @@ class EWSListDoneView(ListView):  # делаем свой класс на осн
 class EWSDetailView(DetailView):  # делаем свой класс на основе TemplateView. Описываем действия
     model = ewsitem
     # context_object_name =
+
+
+class ewsitemViews(APIView):  # делаем образец получения информации от пользователя старыми методами rest_framework
+    @staticmethod
+    def post(request):
+        serializer = ewsitemSerializer(data=request.data)
+        if serializer.is_valid():  # проверяем - получили данные или нет
+            serializer.save()
+            return Response({"status": "success", "data":serializer.data}, status=status.HTTP_200_OK)
+        else:
+            return Response({"status": "error", "data":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
