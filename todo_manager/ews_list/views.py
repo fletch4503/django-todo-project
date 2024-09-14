@@ -8,21 +8,21 @@ from django.views.generic import (
     ListView,
     DetailView,
 )
-from requests import Response
+# from requests import Response
 from rest_framework import status
+# from rest_framework.templatetags.rest_framework import items
 from rest_framework.views import APIView
 from rest_framework.response import Response
 # from yaml import serialize
+
 
 from ews_list.models import (
     ewsitem,
     # log,
     # pwp_exch_model,
 )
-
-import logging
-
 from ews_list.serializers import ewsitemSerializer
+import logging
 
 log = logging.getLogger(__name__)
 # from todo_manager.common import conf_logging
@@ -91,11 +91,20 @@ class EWSDetailView(DetailView):  # делаем свой класс на осн
 
 
 class ewsitemViews(APIView):  # делаем образец получения информации от пользователя старыми методами rest_framework
-    @staticmethod
-    def post(request):
+    def post(self, request):
         serializer = ewsitemSerializer(data=request.data)
         if serializer.is_valid():  # проверяем - получили данные или нет
             serializer.save()
             return Response({"status": "success", "data":serializer.data}, status=status.HTTP_200_OK)
         else:
             return Response({"status": "error", "data":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, id=None):
+        if id:
+            item = ewsitem.objects.get(id=id)
+            serializer = ewsitemSerializer(item)
+            Response({"status": "success", "data":serializer.data}, status=status.HTTP_200_OK)
+
+        items = ewsitem.objects.all()
+        serializer = ewsitemSerializer(items, many=True)
+        return Response({"status": "success", "data": serializer.data}, status=status.HTTP_200_OK)
