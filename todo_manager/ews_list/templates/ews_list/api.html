@@ -1,0 +1,19 @@
+{% extends "ews_list/base.html" %}
+
+{% block title %}
+  EWS List App
+{% endblock  %}
+
+{% block body %}
+  <h1>EWS Добавить элементы</h1>
+  <ul>
+    <li><a href="{% url 'postewsitem:add' %}">Add EWS item</a></li>
+  </ul>
+
+  <h2>Exchange Web Services (EWS):</h2>
+   <form action="/postewsitem/" method="post">
+    {% csrf_token %}
+    {{ ewsform }}
+    <input type="submit" value="Submit">
+   </form>  {% include 'ews_items_add.html' %}
+{% endblock body %}

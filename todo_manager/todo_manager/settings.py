@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "ews_list.apps.EWSListConfig",  # приложение для работы с почтой
     "pwp_list.apps.PWPListConfig",  # приложение для работы с БД
     "debug_toolbar",  # админ панель для декаплинга
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

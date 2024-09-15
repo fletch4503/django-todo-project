@@ -52,6 +52,23 @@ logging.basicConfig(level=logging.DEBUG)
 log = logging.getLogger(__name__)
 
 
+
+class ewsitem(models.Model):
+    # Класс для работы с Exchange-сервером
+    objects = None
+    class Meta:
+        ordering = ("id",)  # со знаком '-' - обратная сортировка
+        verbose_name = "EWS Item"
+
+    # Основные поля модели
+    email_title = models.CharField(max_length=250)  # Сюда вставляем заголовки писем с типом из exchangelib
+    sender = models.EmailField(max_length=254)  # адрес отправителя
+    done = models.BooleanField(default=False)
+    # log.warning("Got some data. email_title: %s, sender: %s, done: %s", email_title, sender, done)
+
+    def __str__(self):
+        return self.email_title
+
 # from todo_manager.common import conf_logging
 # Класс для обращения к серверу Exchange
 class pwp_exch_model:
@@ -202,33 +219,3 @@ class pwp_exch_model:
     #     except:
     #         pass  # Пока так - нужен анализ типа сообщения во входящих
 
-
-class ewsitem(models.Model):
-    # Класс для работы с Exchange-сервером
-    objects = None
-
-
-    class Meta:
-        ordering = ("id",)  # со знаком '-' - обратная сортировка
-        verbose_name = "EWS Item"
-
-    # class Meta:
-    #     project_id = ("id", )  # со знаком '-' - обратная сортировка
-    #     project_req_date = "Project Date"
-    # conf_logging(level=logging.DEBUG)
-    # ews_exch = pwp_exch_model()
-    # log.warning("Количество входящих сообщений %r", ews_exch.msg_cnt_list)
-    # total_count = 0
-    # for i in range(0, len(ews_exch.msg_cnt_list)):
-    #     total_count = total_count + ews_exch.msg_cnt_list[i]
-    # if total_count == 0:
-    #     log.warning("ews_list - У вас нет входящих сообщений!!")
-    # log.warning("Количество входящих сообщений: %r", total_count)
-    # Основные поля модели
-    email_title = models.CharField(max_length=250)  # Сюда вставляем заголовки писем с типом из exchangelib
-    sender = models.EmailField(max_length=254)  # адрес отправителя
-    done = models.BooleanField(default=False)
-    # log.warning("Got some data. email_title: %s, sender: %s, done: %s", email_title, sender, done)
-
-    def __str__(self):
-        return self.email_title
